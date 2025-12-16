@@ -12,4 +12,4 @@ bootstrapApplication(App, {
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ]
-});
+}).catch(console.error)
