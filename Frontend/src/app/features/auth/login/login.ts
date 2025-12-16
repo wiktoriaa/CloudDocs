@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {signInWithEmailAndPassword} from '@angular/fire/auth';
+import {Auth, signInWithEmailAndPassword} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +12,8 @@ export class Login implements OnInit {
   ngOnInit(): void {
   }
 
-  logIn(auth, email, password) {
-    signInWithEmailAndPassword(auth, email, password);
+  logIn(auth: Auth, email: string, password: string) {
+    signInWithEmailAndPassword(auth, email, password).then(r => null);
   }
 
 }
