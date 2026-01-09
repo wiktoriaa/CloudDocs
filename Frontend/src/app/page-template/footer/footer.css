@@ -1,0 +1,20 @@
+.footer {
+  margin-top: auto;
+}
+
+.footer-toolbar {
+  min-height: 56px;
+  font-size: 14px;
+  justify-content: center;
+}
+
+.footer-toolbar a {
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .footer-toolbar {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

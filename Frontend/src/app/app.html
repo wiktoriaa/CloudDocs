@@ -1,3 +1,36 @@
-<app-page-header></app-page-header>
-<router-outlet></router-outlet>
-<app-page-footer></app-page-footer>
+<mat-sidenav-container class="sidenav-container">
+
+  <mat-sidenav #sidenav mode="over">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" (click)="sidenav.close()">Documents</a>
+      <a mat-list-item routerLink="/about" (click)="sidenav.close()">Folder</a>
+      <a mat-list-item routerLink="/services" (click)="sidenav.close()">Media</a>
+      <a mat-list-item routerLink="/contact" (click)="sidenav.close()">Misc</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <mat-toolbar color="primary" class="navbar">
+
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="title">CloudDocs</span>
+
+      <span class="spacer"></span>
+      <button mat-button routerLink="/home">Home</button>
+      <button mat-button routerLink="/about">About</button>
+      <button mat-button routerLink="/services">Services</button>
+      <button mat-button routerLink="/contact">Contact</button>
+
+    </mat-toolbar>
+
+    <hr/>
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<app-footer></app-footer>
