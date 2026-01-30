@@ -6,6 +6,7 @@ import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import {getStorage, provideStorage} from '@angular/fire/storage';
 import {routes} from './app/app.routes';
 import {provideRouter} from '@angular/router';
+import {projectConfig} from './environments/environment.prod';
 
 bootstrapApplication(App, {
   providers: [
