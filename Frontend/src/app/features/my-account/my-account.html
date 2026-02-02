@@ -16,7 +16,12 @@
       }
       <p><strong>Email zweryfikowany:</strong> {{ user.emailVerified ? 'Tak' : 'Nie' }}</p>
       <br>
-      <button mat-raised-button color="warn" (click)="onLogout()">Wyloguj się</button>
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" routerLink="/files">
+          <span>📁 Moje pliki</span>
+        </button>
+        <button mat-raised-button color="warn" (click)="onLogout()">Wyloguj się</button>
+      </div>
     </div>
   } @else {
     <p>Nie jesteś zalogowany/a</p>

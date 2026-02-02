@@ -34,3 +34,8 @@ h1 {
   object-fit: cover;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}

@@ -1,1 +1,79 @@
-<p>uploader works!</p>
+<div class="uploader-container">
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>cloud_upload</mat-icon>
+        Prześlij pliki
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="upload-area">
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          hidden
+        />
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="fileInput.click()"
+          [disabled]="isUploading"
+        >
+          <mat-icon>add</mat-icon>
+          Wybierz plik
+        </button>
+
+        @if (isUploading) {
+          <div class="progress-container">
+            <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+            <span class="progress-text">{{ uploadProgress | number:'1.0-0' }}%</span>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="files-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>folder</mat-icon>
+        Twoje pliki
+      </mat-card-title>
+      <button mat-icon-button (click)="loadFiles()" [disabled]="isLoading">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      @if (isLoading) {
+        <div class="loading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          <p>Ładowanie plików...</p>
+        </div>
+      } @else if (files.length === 0) {
+        <div class="empty-state">
+          <mat-icon>cloud_off</mat-icon>
+          <p>Nie masz jeszcze żadnych plików</p>
+          <p class="hint">Prześlij swój pierwszy plik używając przycisku powyżej</p>
+        </div>
+      } @else {
+        <mat-list>
+          @for (file of files; track file.fullPath) {
+            <mat-list-item class="file-item">
+              <mat-icon matListItemIcon>{{ getFileIcon(file.name) }}</mat-icon>
+              <span matListItemTitle>{{ getDisplayName(file.name) }}</span>
+              <div matListItemMeta class="file-actions">
+                <button mat-icon-button color="primary" (click)="downloadFile(file)" title="Pobierz">
+                  <mat-icon>download</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteFile(file)" title="Usuń">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          }
+        </mat-list>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

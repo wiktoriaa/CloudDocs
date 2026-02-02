@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/my-account/my-account').then(m => m.MyAccount)
   },
   {
+    path: 'files',
+    loadComponent: () => import('./features/uploader/uploader').then(m => m.Uploader)
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
