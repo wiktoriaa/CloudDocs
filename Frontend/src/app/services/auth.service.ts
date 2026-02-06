@@ -19,6 +19,10 @@ export class AuthService {
   isLoading = signal(false);
   error = signal<string | null>(null);
 
+  isUserLoggedIn(): boolean {
+    return this.auth.currentUser !== null;
+  }
+
   async login(email: string, password: string): Promise<boolean> {
     this.isLoading.set(true);
     this.error.set(null);

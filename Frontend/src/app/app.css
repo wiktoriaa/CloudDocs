@@ -6,13 +6,110 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  background: white !important;
+  color: #333 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 8px 24px;
+  transition: all 0.3s ease;
+}
+
+.navbar-transparent {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+
+.navbar-transparent .title {
+  background: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar-transparent button {
+  color: white !important;
+}
+
+.navbar-transparent button:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.navbar-transparent mat-icon {
+  color: white !important;
 }
 
 .title {
   margin-left: 8px;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 24px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+}
+
+.title:hover {
+  opacity: 0.8;
 }
 
 .spacer {
   flex: 1 1 auto;
 }
+
+.navbar button {
+  margin-left: 8px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.navbar button:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.navbar mat-icon {
+  color: #667eea;
+}
+
+mat-sidenav {
+  width: 250px;
+  padding-top: 20px;
+}
+
+mat-sidenav mat-nav-list a {
+  color: #333;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+mat-sidenav mat-nav-list a:hover {
+  background: rgba(102, 126, 234, 0.1);
+  border-left-color: #667eea;
+  color: #667eea;
+}
+
+mat-sidenav mat-nav-list a.active {
+  background: rgba(102, 126, 234, 0.15);
+  border-left-color: #764ba2;
+  color: #667eea;
+  font-weight: 600;
+}
+
+hr {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 4px 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}
+

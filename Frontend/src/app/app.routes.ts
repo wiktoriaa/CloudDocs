@@ -14,8 +14,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/uploader/uploader').then(m => m.Uploader)
   },
   {
+    path: 'home',
+    loadComponent: () => import('./features/home/home').then(m => m.Home)
+  },
+  {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   }
 ];

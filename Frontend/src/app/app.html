@@ -2,16 +2,16 @@
 
   <mat-sidenav #sidenav mode="over">
     <mat-nav-list>
-      <a mat-list-item routerLink="/home" (click)="sidenav.close()">Documents</a>
-      <a mat-list-item routerLink="/about" (click)="sidenav.close()">Folder</a>
-      <a mat-list-item routerLink="/services" (click)="sidenav.close()">Media</a>
-      <a mat-list-item routerLink="/contact" (click)="sidenav.close()">Misc</a>
+      <a mat-list-item routerLink="/home" (click)="sidenav.close()">Home</a>
+      <a mat-list-item routerLink="/files" (click)="sidenav.close()">Pliki</a>
+      <a mat-list-item routerLink="/my-account" (click)="sidenav.close()">Moje konto</a>
+      <a mat-list-item routerLink="/login" (click)="sidenav.close()">Logowanie</a>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
 
-    <mat-toolbar color="primary" class="navbar">
+    <mat-toolbar class="navbar" [ngClass]="{'navbar-transparent': isHomePage}">
 
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
@@ -21,13 +21,12 @@
 
       <span class="spacer"></span>
       <button mat-button routerLink="/home">Home</button>
-      <button mat-button routerLink="/my-account">My account</button>
-      <button mat-button routerLink="/services">Services</button>
-      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/files">Pliki</button>
+      <button mat-button routerLink="/my-account">Moje konto</button>
+      <button mat-button routerLink="/login">Logowanie</button>
 
     </mat-toolbar>
 
-    <hr/>
     <router-outlet></router-outlet>
 
   </mat-sidenav-content>

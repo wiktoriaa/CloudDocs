@@ -2,14 +2,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 200px);
+  min-height: 100vh;
   padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .login-card {
   width: 100%;
-  max-width: 400px;
-  padding: 24px;
+  max-width: 450px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .login-form {
@@ -32,11 +38,43 @@
 .button-row button {
   flex: 1;
   height: 48px;
+  border-radius: 0;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.button-row button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button-row button[color="primary"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.button-row button[color="accent"] {
+  border: 2px solid #667eea;
+  color: #667eea;
 }
 
 .divider {
   margin: 24px 0;
   text-align: center;
+  position: relative;
+  color: #666;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: #ddd;
 }
 
 .google-button {
@@ -46,6 +84,20 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  border-radius: 0;
+  border: 2px solid #4285f4;
+  color: #4285f4;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.google-button:hover:not(:disabled) {
+  background: #f8f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
 }
 
 .google-icon {
@@ -55,11 +107,12 @@
 }
 
 .error-message {
-  color: #f44336;
+  color: #d32f2f;
   background-color: #ffebee;
   padding: 12px;
-  border-radius: 4px;
+  border-radius: 0;
   font-size: 14px;
+  border-left: 4px solid #d32f2f;
 }
 
 mat-card-header {
@@ -69,6 +122,40 @@ mat-card-header {
 }
 
 mat-card-title {
-  font-size: 24px !important;
-  font-weight: 500 !important;
+  font-size: 28px;
+  font-weight: 500;
+  color: #000;
+}
+
+::ng-deep .login-card .mat-mdc-form-field {
+  --mdc-outlined-text-field-focus-outline-color: #667eea;
+  --mdc-outlined-text-field-focus-label-text-color: #667eea;
+}
+
+.back-to-home {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.home-link {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.home-link:hover {
+  color: #764ba2;
+  transform: translateX(-3px);
+}
+
+@media (max-width: 768px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
 }
