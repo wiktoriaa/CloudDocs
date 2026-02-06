@@ -11,6 +11,8 @@
   padding: 20px;
   position: relative;
   overflow: hidden;
+  margin-top: -64px;
+  padding-top: 84px;
 }
 
 .home-container::before {

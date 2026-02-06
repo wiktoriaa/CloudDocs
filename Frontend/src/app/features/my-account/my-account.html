@@ -1,31 +1,38 @@
-<div class="my-account-container">
-  <h1>Twoje konto</h1>
-  <br>
-
-  @if (authService.user$ | async; as user) {
-    <div class="user-info">
-      <h2>Informacje o użytkowniku:</h2>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>UID:</strong> {{ user.uid }}</p>
-      @if (user.displayName) {
-        <p><strong>Nazwa:</strong> {{ user.displayName }}</p>
-      }
-      @if (user.photoURL) {
-        <p><strong>Zdjęcie profilowe:</strong></p>
-        <img [src]="user.photoURL" alt="Profile photo" class="profile-photo">
-      }
-      <p><strong>Email zweryfikowany:</strong> {{ user.emailVerified ? 'Tak' : 'Nie' }}</p>
-      <br>
-      <div class="action-buttons">
-        <button mat-raised-button color="primary" routerLink="/files">
-          <span>📁 Moje pliki</span>
-        </button>
-        <button mat-raised-button color="warn" (click)="onLogout()">Wyloguj się</button>
-      </div>
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened class="action-buttons-container">
+    <div class="action-buttons">
+      <a routerLink="/files">
+        Moje pliki
+      </a>
+      <a (click)="onLogout()">Wyloguj się</a>
     </div>
-  } @else {
-    <p>Nie jesteś zalogowany/a</p>
-    <br>
-    <button mat-raised-button color="primary" routerLink="/login">Zaloguj się</button>
-  }
-</div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="my-account-container">
+      <h1>Twoje konto</h1>
+      <br>
+
+      @if (authService.user$ | async; as user) {
+        <div class="user-info">
+          <h2>Informacje o użytkowniku:</h2>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>UID:</strong> {{ user.uid }}</p>
+          @if (user.displayName) {
+            <p><strong>Nazwa:</strong> {{ user.displayName }}</p>
+          }
+          @if (user.photoURL) {
+            <p><strong>Zdjęcie profilowe:</strong></p>
+            <img [src]="user.photoURL" alt="Profile photo" class="profile-photo">
+          }
+          <p><strong>Email zweryfikowany:</strong> {{ user.emailVerified ? 'Tak' : 'Nie' }}</p>
+        </div>
+      } @else {
+        <p>Nie jesteś zalogowany/a</p>
+        <br>
+        <button mat-raised-button color="primary" routerLink="/login">Zaloguj się</button>
+      }
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+

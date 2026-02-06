@@ -3,10 +3,11 @@ import { AuthService } from '../../services/auth.service';
 import { AsyncPipe } from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
+import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-my-account',
-  imports: [AsyncPipe, MatButton, RouterLink],
+  imports: [AsyncPipe, MatButton, RouterLink, MatDrawerContainer, MatDrawer, MatDrawerContent],
   templateUrl: './my-account.html',
   styleUrl: './my-account.css',
 })
