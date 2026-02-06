@@ -1,14 +1,14 @@
-<mat-drawer-container class="example-container">
+<mat-drawer-container class="my-account-container">
   <mat-drawer mode="side" opened class="action-buttons-container">
     <div class="action-buttons">
       <a routerLink="/files">
-        Moje pliki
+        <mat-icon>folder</mat-icon> Moje pliki
       </a>
-      <a (click)="onLogout()">Wyloguj się</a>
+      <a (click)="onLogout()"><mat-icon>logout</mat-icon> Wyloguj się</a>
     </div>
   </mat-drawer>
   <mat-drawer-content>
-    <div class="my-account-container">
+    <div class="account-content">
       <h1>Twoje konto</h1>
       <br>
 

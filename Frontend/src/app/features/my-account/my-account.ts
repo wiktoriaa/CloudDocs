@@ -4,10 +4,11 @@ import { AsyncPipe } from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-my-account',
-  imports: [AsyncPipe, MatButton, RouterLink, MatDrawerContainer, MatDrawer, MatDrawerContent],
+  imports: [AsyncPipe, MatButton, RouterLink, MatDrawerContainer, MatDrawer, MatDrawerContent, MatIcon],
   templateUrl: './my-account.html',
   styleUrl: './my-account.css',
 })

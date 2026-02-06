@@ -1,5 +1,9 @@
 .my-account-container {
-  padding: 24px;
+  min-height: 100vh;
+}
+
+.account-content {
+  margin: 2rem;
 }
 
 h1 {
@@ -36,15 +40,20 @@ h1 {
 .action-buttons-container {
   border-right: 1px solid #ddd;
   border-radius: 0;
+  background:
+    linear-gradient(217deg, rgba(102, 126, 234, 0.8), transparent 70.71%),
+    linear-gradient(127deg, rgba(118, 75, 162, 0.8), transparent 70.71%),
+    linear-gradient(336deg, rgba(102, 126, 234, 0.8), transparent 70.71%),
+    #764ba2;
 }
 
 .action-buttons {
-
+  color: white;
 }
 
 .action-buttons a {
   display: block;
-  font-size: 1rem;
+  font-size: 1.1rem;
   width: 100%;
   border-bottom: 1px solid #ddd;
   padding: 2rem 1rem;
