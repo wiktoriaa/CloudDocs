@@ -8,6 +8,8 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {Footer} from './page-template/footer/footer';
 import {CommonModule} from '@angular/common';
 import {filter} from 'rxjs';
+import {AuthService} from './services/auth.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,8 @@ import {filter} from 'rxjs';
 })
 export class App {
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private authService = inject(AuthService);
   isHomePage = false;
 
   constructor() {
@@ -25,5 +29,16 @@ export class App {
     ).subscribe(() => {
       this.isHomePage = this.router.url === '/' || this.router.url === '/home';
     });
+  }
+
+  public logout() {
+    this.authService.logout().then(r => {
+      this.snackBar.open('Pomyślnie wylogowano', 'OK', { duration: 3000 });
+      this.router.navigate(['/login']);
+    });
+  }
+
+  public isUserLoggedIn(): boolean {
+    return this.authService.isUserLoggedIn();
   }
 }

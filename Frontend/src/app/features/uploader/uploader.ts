@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FileStorageService, UserFile, FileUploadProgress } from '../../services/file-storage.service';
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-uploader',
@@ -26,6 +28,9 @@ import { FileStorageService, UserFile, FileUploadProgress } from '../../services
 export class Uploader implements OnInit {
   private fileStorageService = inject(FileStorageService);
   private snackBar = inject(MatSnackBar);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   files: UserFile[] = [];
   uploadProgress: number = 0;
@@ -33,6 +38,12 @@ export class Uploader implements OnInit {
   isLoading: boolean = true;
 
   ngOnInit() {
+    if (!this.authService.isUserLoggedIn()) {
+      this.snackBar.open('Musisz być zalogowany, aby zarządzać plikami', 'OK', { duration: 3000 });
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.loadFiles();
   }
 
@@ -42,9 +53,14 @@ export class Uploader implements OnInit {
       this.files = await this.fileStorageService.getUserFiles();
     } catch (error) {
       console.error('Błąd podczas ładowania plików:', error);
-      this.snackBar.open('Nie udało się załadować plików', 'OK', { duration: 3000 });
+      setTimeout(() => {
+        this.snackBar.open('Nie udało się załadować plików', 'OK', { duration: 3000 });
+      });
     } finally {
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      });
     }
   }
 
@@ -63,18 +79,26 @@ export class Uploader implements OnInit {
       next: (progress: FileUploadProgress) => {
         this.uploadProgress = progress.progress;
         if (progress.state === 'success') {
-          this.snackBar.open(`Plik "${file.name}" został przesłany!`, 'OK', { duration: 3000 });
+          setTimeout(() => {
+            this.snackBar.open(`Plik "${file.name}" został przesłany!`, 'OK', { duration: 3000 });
+          });
           this.loadFiles();
         }
       },
       error: (error) => {
         console.error('Błąd przesyłania:', error);
-        this.snackBar.open('Błąd podczas przesyłania pliku', 'OK', { duration: 3000 });
-        this.isUploading = false;
+        setTimeout(() => {
+          this.snackBar.open('Błąd podczas przesyłania pliku', 'OK', { duration: 3000 });
+          this.isUploading = false;
+          this.cdr.detectChanges();
+        });
       },
       complete: () => {
-        this.isUploading = false;
-        this.uploadProgress = 0;
+        setTimeout(() => {
+          this.isUploading = false;
+          this.uploadProgress = 0;
+          this.cdr.detectChanges();
+        });
       }
     });
   }
@@ -83,11 +107,15 @@ export class Uploader implements OnInit {
     if (confirm(`Czy na pewno chcesz usunąć plik "${this.getDisplayName(file.name)}"?`)) {
       try {
         await this.fileStorageService.deleteFile(file.fullPath);
-        this.snackBar.open('Plik został usunięty', 'OK', { duration: 3000 });
+        setTimeout(() => {
+          this.snackBar.open('Plik został usunięty', 'OK', { duration: 3000 });
+        });
         this.loadFiles();
       } catch (error) {
         console.error('Błąd usuwania:', error);
-        this.snackBar.open('Nie udało się usunąć pliku', 'OK', { duration: 3000 });
+        setTimeout(() => {
+          this.snackBar.open('Nie udało się usunąć pliku', 'OK', { duration: 3000 });
+        });
       }
     }
   }
