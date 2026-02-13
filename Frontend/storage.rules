@@ -1,10 +1,14 @@
 rules_version = '2';
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
 service firebase.storage {
   match /b/{bucket}/o {
+    // Reguły dla plików użytkowników
+    match /users/{userId}/documents/{fileName} {
+      // Użytkownik może odczytywać, zapisywać i usuwać tylko swoje pliki
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Blokuj dostęp do wszystkich innych ścieżek
     match /{allPaths=**} {
       allow read, write: if false;
     }
