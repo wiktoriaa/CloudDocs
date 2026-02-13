@@ -1,0 +1,6 @@
+{
+  "storage": {
+    "rules": "storage.rules",
+    "bucket": "clouddocs-7792f.appspot.com" // to z googla
+  }
+}
