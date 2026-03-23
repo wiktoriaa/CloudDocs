@@ -12,7 +12,6 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-uploader',
-  standalone: true,
   imports: [
     CommonModule,
     MatButtonModule,
