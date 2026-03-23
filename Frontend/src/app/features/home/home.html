@@ -24,21 +24,19 @@
     </div>
 
     <div class="cta-section">
-      <ng-container *ngIf="!isLoggedIn">
+      @if (!isLoggedIn) {
         <button class="btn btn-primary" (click)="navigateToLogin()">
           Zaloguj się
         </button>
         <p class="login-hint">Zaloguj się, aby zarządzać swoimi plikami</p>
-      </ng-container>
-
-      <ng-container *ngIf="isLoggedIn">
+      } @else {
         <button class="btn btn-primary" (click)="navigateToFiles()">
           Moje pliki
         </button>
         <button class="btn btn-secondary" (click)="navigateToMyAccount()">
           Moje konto
         </button>
-      </ng-container>
+      }
     </div>
   </div>
 </div>

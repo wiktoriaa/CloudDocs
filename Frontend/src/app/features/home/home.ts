@@ -6,7 +6,6 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   imports: [CommonModule, MatIcon],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
