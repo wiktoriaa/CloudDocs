@@ -16,7 +16,7 @@
 
   <mat-sidenav-content>
 
-    <mat-toolbar class="navbar" [ngClass]="{'navbar-transparent': isHomePage}">
+    <mat-toolbar class="navbar" [class.navbar-transparent]="isHomePage">
 
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
