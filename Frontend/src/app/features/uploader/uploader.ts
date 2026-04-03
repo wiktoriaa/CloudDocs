@@ -1,25 +1,25 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { FileStorageService, UserFile, FileUploadProgress } from '../../services/file-storage.service';
+import {ChangeDetectorRef, Component, inject, OnInit, signal} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {FileStorageService, FileUploadProgress, UserFile} from '../../services/file-storage.service';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-uploader',
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
     MatCardModule,
     MatListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    DecimalPipe
   ],
   templateUrl: './uploader.html',
   styleUrl: './uploader.css',
@@ -35,6 +35,11 @@ export class Uploader implements OnInit {
   uploadProgress: number = 0;
   isUploading: boolean = false;
   isLoading: boolean = true;
+
+  // files = signal<UserFile[]>([])
+  // uploadProgress = signal(0);
+  // isUploading = signal(false)
+  // isLoading = signal(true)
 
   ngOnInit() {
     if (!this.authService.isUserLoggedIn()) {
