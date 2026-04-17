@@ -27,7 +27,7 @@ public class StorageController {
     }
 
     @GetMapping("/files/{filename}")
-    public ResponseEntity<Object> downloadFile(@RequestParam String username, @PathVariable String filename) {
+    public ResponseEntity<byte[]> downloadFile(@RequestParam String username, @PathVariable String filename) {
         var fileContent = storageService.downloadFile(username, filename);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
