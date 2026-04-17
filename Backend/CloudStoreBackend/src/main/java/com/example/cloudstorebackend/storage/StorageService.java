@@ -14,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class StorageService {
@@ -73,6 +75,49 @@ public class StorageService {
                     "Failed to write file to disk: fileName=%s, username=%s, destination=%s"
                             .formatted(fileName, username, destination),
                     e);
+        }
+    }
+
+    public List<String> getFiles(String username) {
+        Path userDir = Paths.get(storageProperties.uploadDir(), username);
+        log.info("Listing files for user: username={}, path={}", username, userDir.toAbsolutePath());
+
+        if (!Files.exists(userDir)) {
+            log.info("User directory does not exist, returning empty list: username={}", username);
+            return Collections.emptyList();
+        }
+
+        try (var stream = Files.list(userDir)) {
+            List<String> files = stream
+                    .filter(Files::isRegularFile)
+                    .map(path -> path.getFileName().toString())
+                    .toList();
+            log.info("Found files for user: username={}, count={}", username, files.size());
+            return files;
+        } catch (IOException e) {
+            throw new StorageException("STORAGE_LIST_FAILED",
+                    "Failed to list files for user: username=%s, path=%s".formatted(username, userDir), e);
+        }
+    }
+
+    public Object downloadFile(String username, String filename) {
+        Path filePath = Paths.get(storageProperties.uploadDir(), username, filename);
+        log.info("Downloading file: username={}, filename={}, path={}",
+                username, filename, filePath.toAbsolutePath());
+
+        if (!Files.exists(filePath) || !Files.isRegularFile(filePath)) {
+            throw new StorageException("STORAGE_FILE_NOT_FOUND",
+                    "File not found: username=%s, filename=%s".formatted(username, filename));
+        }
+
+        try {
+            byte[] fileContent = Files.readAllBytes(filePath);
+            log.info("File downloaded successfully: username={}, filename={}, sizeBytes={}",
+                    username, filename, fileContent.length);
+            return fileContent;
+        } catch (IOException e) {
+            throw new StorageException("STORAGE_READ_FAILED",
+                    "Failed to read file: username=%s, filename=%s".formatted(username, filename), e);
         }
     }
 }
