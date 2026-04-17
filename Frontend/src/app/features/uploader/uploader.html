@@ -57,22 +57,23 @@
           <p class="hint">Prześlij swój pierwszy plik używając przycisku powyżej</p>
         </div>
       } @else {
-        <mat-list>
-          @for (file of files; track file.fullPath) {
-            <mat-list-item class="file-item">
-              <mat-icon matListItemIcon>{{ getFileIcon(file.name) }}</mat-icon>
-              <span matListItemTitle>{{ getDisplayName(file.name) }}</span>
-              <div matListItemMeta class="file-actions">
-                <button mat-icon-button color="primary" (click)="downloadFile(file)" title="Pobierz">
-                  <mat-icon>download</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="deleteFile(file)" title="Usuń">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </mat-list-item>
-          }
-        </mat-list>
+<!--        TODO: Poprawić upload na backendzie -->
+<!--        <mat-list>-->
+<!--          @for (file of files; track file.fullPath) {-->
+<!--            <mat-list-item class="file-item">-->
+<!--              <mat-icon matListItemIcon>{{ getFileIcon(file.name) }}</mat-icon>-->
+<!--              <span matListItemTitle>{{ getDisplayName(file.name) }}</span>-->
+<!--              <div matListItemMeta class="file-actions">-->
+<!--                <button mat-icon-button color="primary" (click)="downloadFile(file)" title="Pobierz">-->
+<!--                  <mat-icon>download</mat-icon>-->
+<!--                </button>-->
+<!--                <button mat-icon-button color="warn" (click)="deleteFile(file)" title="Usuń">-->
+<!--                  <mat-icon>delete</mat-icon>-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </mat-list-item>-->
+<!--          }-->
+<!--        </mat-list>-->
       }
     </mat-card-content>
   </mat-card>

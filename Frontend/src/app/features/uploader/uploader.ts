@@ -31,7 +31,7 @@ export class Uploader implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  files: UserFile[] = [];
+  files: string[] = [];
   uploadProgress: number = 0;
   isUploading: boolean = false;
   isLoading: boolean = true;

@@ -15,6 +15,10 @@ export interface UserFile {
   downloadURL: string;
 }
 
+export interface FilesResponse {
+  files: string[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -70,9 +74,26 @@ export class FileStorageService {
   }
 
 
-  async getUserFiles(folder: string = 'documents'): Promise<UserFile[]> {
+  async getUserFiles(folder: string = 'documents'): Promise<string[]> {
     this.checkUserLoggedIn()
-    return []
+
+    const files: string[] = [];
+
+    this.authService.getUserToken().then((token: string | null) => {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      });
+
+      this.httpClient.get<{ files: string[] }>(`${this.API_URL}/files`, { headers }).subscribe({
+        next: (response: FilesResponse) => {
+          files.push(...response.files);
+        },
+        error: (error: unknown) => {
+          console.error('Error fetching user files:', error);
+        }
+      });
+    })
+    return files
   }
 
   async deleteFile(filePath: string): Promise<void> {
