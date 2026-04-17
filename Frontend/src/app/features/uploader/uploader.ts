@@ -129,7 +129,6 @@ export class Uploader implements OnInit {
   }
 
   getDisplayName(fileName: string): string {
-    // Usuwamy timestamp z początku nazwy pliku
     const parts = fileName.split('_');
     if (parts.length > 1 && !isNaN(Number(parts[0]))) {
       return parts.slice(1).join('_');

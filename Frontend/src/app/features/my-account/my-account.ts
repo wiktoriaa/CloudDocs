@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AsyncPipe } from '@angular/common';
 import {MatButton} from '@angular/material/button';
@@ -12,9 +12,12 @@ import {MatIcon} from '@angular/material/icon';
   templateUrl: './my-account.html',
   styleUrl: './my-account.css',
 })
-export class MyAccount {
+export class MyAccount implements OnInit {
   authService = inject(AuthService);
 
+  ngOnInit() {
+    this.authService.logUserToken()
+  }
   protected onLogout() {
     this.authService.logout().then(r => console.log("Wylogowano:", r));
   }

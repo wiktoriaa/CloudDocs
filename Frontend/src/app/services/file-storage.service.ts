@@ -1,7 +1,7 @@
-import { Injectable, inject } from '@angular/core';
-import { Storage, ref, uploadBytesResumable, getDownloadURL, listAll, deleteObject, UploadTaskSnapshot } from '@angular/fire/storage';
-import { Auth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {Observable, Subscriber} from 'rxjs';
+import {AuthService} from './auth.service';
+import {HttpClient, HttpEventType, HttpHeaders, HttpRequest} from '@angular/common/http';
 
 export interface FileUploadProgress {
   progress: number;
@@ -19,66 +19,68 @@ export interface UserFile {
   providedIn: 'root'
 })
 export class FileStorageService {
-  private storage = inject(Storage);
-  private auth = inject(Auth);
+  private authService = inject(AuthService)
+  private API_URL = 'http://localhost:8080/api/v1/storage'
+  private httpClient = inject(HttpClient)
 
-  // Przesyłanie pliku z obserwacją postępu
+
   uploadFile(file: File, folder: string = 'documents'): Observable<FileUploadProgress> {
-    return new Observable(observer => {
-      const user = this.auth.currentUser;
-      if (!user) {
-        observer.error('Użytkownik nie jest zalogowany');
-        return;
-      }
+      this.checkUserLoggedIn()
 
-      const filePath = `users/${user.uid}/${folder}/${Date.now()}_${file.name}`;
-      const storageRef = ref(this.storage, filePath);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+    return new Observable<FileUploadProgress>((subscriber: Subscriber<FileUploadProgress>) => {
+      this.authService.getUserToken().then((token: string | null) => {
+        const formData = new FormData();
+        formData.append('document', file, file.name);
 
-      uploadTask.on('state_changed',
-        (snapshot: UploadTaskSnapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          observer.next({
-            progress,
-            state: snapshot.state as 'running' | 'paused'
-          });
-        },
-        (error) => {
-          observer.next({ progress: 0, state: 'error' });
-          observer.error(error);
-        },
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          observer.next({ progress: 100, downloadURL, state: 'success' });
-          observer.complete();
-        }
-      );
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${token}`
+        });
+
+        const req = new HttpRequest('POST', `${this.API_URL}/upload`, formData, {
+          headers,
+          reportProgress: true
+        });
+
+        this.httpClient.request(req).subscribe({
+          next: (event) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              const progress = event.total
+                ? Math.round((100 * event.loaded) / event.total)
+                : 0;
+              subscriber.next({ progress, state: 'running' });
+            } else if (event.type === HttpEventType.Response) {
+              const body = event.body as Record<string, string> | null;
+              subscriber.next({
+                progress: 100,
+                downloadURL: body?.['downloadURL'],
+                state: 'success'
+              });
+              subscriber.complete();
+            }
+          },
+          error: (error: unknown) => {
+            subscriber.next({ progress: 0, state: 'error' });
+            subscriber.error(error);
+          }
+        });
+      }).catch((error: unknown) => {
+        subscriber.error(error);
+      });
     });
   }
 
-  // Pobierz listę plików użytkownika
+
   async getUserFiles(folder: string = 'documents'): Promise<UserFile[]> {
-    const user = this.auth.currentUser;
-    if (!user) throw new Error('Użytkownik nie jest zalogowany');
-
-    const folderRef = ref(this.storage, `users/${user.uid}/${folder}`);
-    const result = await listAll(folderRef);
-
-    const files: UserFile[] = [];
-    for (const item of result.items) {
-      const downloadURL = await getDownloadURL(item);
-      files.push({
-        name: item.name,
-        fullPath: item.fullPath,
-        downloadURL
-      });
-    }
-    return files;
+    this.checkUserLoggedIn()
+    return []
   }
 
-  // Usuń plik
   async deleteFile(filePath: string): Promise<void> {
-    const fileRef = ref(this.storage, filePath);
-    await deleteObject(fileRef);
+  }
+
+  private checkUserLoggedIn(): void {
+    if (!this.authService.isUserLoggedIn()) {
+      throw new Error('Użytkownik nie jest zalogowany');
+    }
   }
 }

@@ -23,6 +23,28 @@ export class AuthService {
     return this.auth.currentUser !== null;
   }
 
+  getUserToken(): Promise<string | null> {
+    const currentUser = this.auth.currentUser;
+    if (currentUser) {
+      return currentUser.getIdToken();
+    } else {
+      return Promise.resolve(null);
+    }
+  }
+
+  logUserToken() {
+    const currentUser = this.auth.currentUser;
+    if (currentUser) {
+      currentUser.getIdToken().then(token => {
+        console.log('User Token:', token);
+      }).catch(error => {
+        console.error('Error fetching user token:', error);
+      });
+    } else {
+      console.log('No user is currently logged in.');
+    }
+  }
+
   async login(email: string, password: string): Promise<boolean> {
     this.isLoading.set(true);
     this.error.set(null);
