@@ -19,7 +19,7 @@ public class StorageController {
 
     @PostMapping(path = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public void uploadFile(@ModelAttribute UploadFileRequest request) {
-        storageService.saveFile(request.getFileName(), request.getUsername(), request.getDocument());
+        storageService.saveFile(request.getUsername(), request.getDocument());
     }
 }
 

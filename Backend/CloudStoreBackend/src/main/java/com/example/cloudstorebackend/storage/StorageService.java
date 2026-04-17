@@ -43,13 +43,15 @@ public class StorageService {
         }
     }
 
-    public void saveFile(String fileName, String username, MultipartFile document) {
+    public void saveFile(String username, MultipartFile document) {
         if (document == null || document.isEmpty()) {
             throw new StorageException("STORAGE_EMPTY_FILE",
-                    "Cannot save empty file: fileName=%s, username=%s".formatted(fileName, username));
+                    "Cannot save empty file");
         }
 
+        String fileName = document.getOriginalFilename();
         Path userDir = Paths.get(storageProperties.uploadDir(), username);
+
         try {
             Files.createDirectories(userDir);
         } catch (IOException e) {
