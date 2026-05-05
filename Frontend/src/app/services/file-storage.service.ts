@@ -10,13 +10,13 @@ export interface FileUploadProgress {
 }
 
 export interface UserFile {
-  name: string;
-  fullPath: string;
+  fileName: string;
+  fileType: string;
   downloadURL: string;
 }
 
 export interface FilesResponse {
-  files: string[];
+  files: UserFile[];
 }
 
 @Injectable({
@@ -74,17 +74,17 @@ export class FileStorageService {
   }
 
 
-  async getUserFiles(folder: string = 'documents'): Promise<string[]> {
+  async getUserFiles(folder: string = 'documents'): Promise<UserFile[]> {
     this.checkUserLoggedIn()
 
-    const files: string[] = [];
+    const files: UserFile[] = [];
 
     this.authService.getUserToken().then((token: string | null) => {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`
       });
 
-      this.httpClient.get<{ files: string[] }>(`${this.API_URL}/files`, { headers }).subscribe({
+      this.httpClient.get<{ files: UserFile[] }>(`${this.API_URL}/files`, { headers }).subscribe({
         next: (response: FilesResponse) => {
           files.push(...response.files);
         },

@@ -1,5 +1,6 @@
 package com.example.cloudstorebackend.storage;
 
+import com.example.cloudstorebackend.storage.api.UserFile;
 import com.example.cloudstorebackend.storage.utils.IOHelper;
 import com.example.cloudstorebackend.storage.utils.StorageException;
 import com.example.cloudstorebackend.storage.utils.StorageProperties;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,7 +62,7 @@ public class StorageService {
                 fileName, username, document.getSize());
     }
 
-    public List<String> getFiles(String username) {
+    public List<UserFile> getFiles(String username) {
         Path userDir = resolveUserDir(username);
         log.info("Listing files for user: username={}, path={}", username, userDir.toAbsolutePath());
 
@@ -69,12 +71,12 @@ public class StorageService {
             return Collections.emptyList();
         }
 
-        List<String> files = IOHelper.tryIO("STORAGE_LIST_FAILED",
+        List<UserFile> files = IOHelper.tryIO("STORAGE_LIST_FAILED",
                 "Failed to list files for user: username=%s".formatted(username),
                 () -> {
                     try (var stream = Files.list(userDir)) {
                         return stream.filter(Files::isRegularFile)
-                                .map(path -> path.getFileName().toString())
+                                .map(this::pathToUserFile)
                                 .toList();
                     }
                 });
@@ -99,6 +101,26 @@ public class StorageService {
         log.info("File downloaded successfully: username={}, filename={}, sizeBytes={}",
                 username, safeFilename, fileContent.length);
         return fileContent;
+    }
+
+    private UserFile pathToUserFile(Path filepath) {
+        return UserFile.builder()
+                .fileName(filepath.getFileName().toString())
+                .fileType(getFileType(filepath))
+                .downloadUrl("/api/v1/storage/files/" + filepath.getFileName().toString())
+                .build();
+    }
+
+    private String getFileType(Path filepath) {
+        String fileType = null;
+
+        try {
+            fileType = Files.probeContentType(filepath);
+        } catch (IOException e) {
+            log.warn("Nie udało się określić typu pliku: {}", filepath, e);
+        }
+
+        return fileType;
     }
 
     private Path resolveUserDir(String username) {
