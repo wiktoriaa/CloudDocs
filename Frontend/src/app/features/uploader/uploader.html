@@ -18,7 +18,7 @@
           mat-raised-button
           color="primary"
           (click)="fileInput.click()"
-          [disabled]="isUploading"
+          [disabled]="isUploading()"
         >
           <mat-icon>add</mat-icon>
           Wybierz plik
@@ -50,7 +50,7 @@
           <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           <p>Ładowanie plików...</p>
         </div>
-      } @else if (files.length === 0) {
+      } @else if (files().length === 0) {
         <div class="empty-state">
           <mat-icon>cloud_off</mat-icon>
           <p>Nie masz jeszcze żadnych plików</p>

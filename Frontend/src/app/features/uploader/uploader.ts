@@ -9,6 +9,7 @@ import {FileStorageService, FileUploadProgress, UserFile} from '../../services/f
 import {AuthService} from '../../services/auth.service'
 import {Router} from '@angular/router'
 import {DecimalPipe} from '@angular/common'
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-uploader',
@@ -37,13 +38,14 @@ export class Uploader implements OnInit {
   isLoading = signal(true)
 
   ngOnInit() {
-    if (!this.authService.isUserLoggedIn()) {
-      this.snackBar.open('Musisz być zalogowany, aby zarządzać plikami', 'OK', { duration: 3000 })
-      this.router.navigate(['/login'])
-      return
-    }
-
-    this.loadFiles()
+    this.authService.user$.pipe(take(1)).subscribe(user => {
+      if (!user) {
+        this.snackBar.open('Musisz być zalogowany, aby zarządzać plikami', 'OK', { duration: 3000 })
+        this.router.navigate(['/login'])
+        return
+      }
+      this.loadFiles()
+    })
   }
 
   async loadFiles() {
